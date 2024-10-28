@@ -5,15 +5,15 @@ class Expenseervice {
       );
     }
 
+    addExpense({text, amount}){
+      this.expenses.push(new Expense({ text, amount }));
 
-
-    addExpense(){
+    }
+    deleteExpense(){
+      this.expenses = this.expenses.filter(({ id }) => id !== _id);
 
     }
     editExpense(){
 
-    }
-    deleteExpense(){
-        
-    }
+    } 
 }
