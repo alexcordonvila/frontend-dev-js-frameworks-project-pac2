@@ -1,0 +1,10 @@
+# Pregunta: Per què és el valor de `this` undefined?
+
+## Resposta:
+Al escriure `this.view.bindAddTodo(this.service.addTodo);` trobem un undefined perquè estem fent una crida al mètode 
+addTodo de Service que ha de rebre un parametre text (string). Si usem el this.handleAddTodo estem usant l'arrow function
+definida a la linia 30 del todo.controller.js on si que li passem el todoText que necesita.
+
+Una de les propietats de les arrow functions (fat-arrow) d'ES6 és que no creen un context diferent
+com si ho fan les funcions que usen la keyword "function". Això vol dir que el valor que prèn "this"
+dins una arrow function sera l'heredat del context on es trobi.
