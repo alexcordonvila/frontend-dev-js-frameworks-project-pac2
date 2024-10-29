@@ -5,11 +5,10 @@
  */
 
 class Expense {
-    constructor({ text, amount, complete } = { complete: false }) {
+    constructor({ text, amount }) {
     this.id = this.uuidv4();
     this.text = text;
     this.amount = amount;
-    this.complete = complete;
     }
 
     uuidv4() {

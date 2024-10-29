@@ -21,6 +21,7 @@ class ExpenseView {
         this.money_minus = this.createElement("p",{className:"money minus",id:"money-minus",innerText:"-$0.00"});
 
         this.history_title = this.createElement("h3",{innerText:"History"});
+        
         this.history_list = this.createElement("ul",{className:"list",id:"list"});
 
         this.history_new_transaction = this.createElement("h3",{innerText:"Add new transaction"});
@@ -46,7 +47,6 @@ class ExpenseView {
         this.exp_container.append(this.div_elem_plus,this.div_elem_minus);
         this.container.append(this.subtitle,this.balance,this.exp_container, this.history_title,this.history_list ,this.history_new_transaction,this.form);
         this.app.append(this.title, this.container);
-
     }
 
     createElement(tag, { className = "", id = "", innerText = "",innerHTML = "", type = "", placeholder = "", for_atr = "" } = {}) {
@@ -62,13 +62,66 @@ class ExpenseView {
 
         return element;
     }
+    
+    get _expenseText() {
+        return this.input_text.value;
+    }
+
+    get _expenseAmount() {
+        return this.input_amount.value;
+    }
+    _resetInputText() {
+        this.input_text.value = "";
+    }
+    _resetInputAmount() {
+        this.input_amount.value = "";
+    }
+
+    bindAddExpense(handler) {
+        this.form.addEventListener("submit", event => {
+            event.preventDefault();
+            const expenseText = this._expenseText;
+            const expenseAmount = this._expenseAmount;
+
+            // Validación para asegurarse de que ambos campos tengan valor
+        if (expenseText && expenseAmount) {
+            handler(expenseText, expenseAmount); // Llamada única a handler con ambos valores
+            this._resetInputText();
+            this._resetInputAmount();
+        } else {
+            console.log("Please enter both a description and an amount for the expense.");
+        }
+        });
+    }
+
     getElement(selector) {
         const element = document.querySelector(selector);
     
         return element;
     }
-    displayExpenses(expenses) {
-        
-    }
 
+    displayExpenses(expenses) {
+        // Delete all nodes
+        while (this.history_list.firstChild) {
+            this.history_list.removeChild(this.history_list.firstChild);
+        }
+        console.log(expenses.length);
+        // Show default message
+        if (expenses.length === 0) {
+            const p = this.createElement("p");
+            p.textContent = "Your expense history is empty.";
+            this.history_list.append(p);
+        } else {
+            // Create nodes
+            expenses.forEach(expense => {
+                console.log(expense)
+                this.history_row = this.createElement("li",{className:"plus",innerText: expense.text});
+                this.row_span = this.createElement("span",{innerText:expense.amount});
+                this.row_button = this.createElement("button",{className:"delete-btn", innerText:"X"});
+                this.history_row.append(this.row_span, this.row_button);
+                this.history_list.append(this.history_row);
+                
+            });
+        }
+    }
 }
