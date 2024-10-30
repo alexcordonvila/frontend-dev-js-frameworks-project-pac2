@@ -3,11 +3,10 @@ class ExpenseView {
         this.app = this.getElement("#root");
         this.title = this.createElement("h2",{innerText:"Expense Tracker"});
         this.container = this.createElement("div",{className: "container"});
-
+this.balance
         this.subtitle = this.createElement("h4",{innerText:"Your Balance"});
 
         this.balance = this.createElement("h1", { id: "balance", innerText: "$0.00" });
-        this.balance = this.createElement("h1",{id: "balance", innerText:"$0.00"});
 
         this.exp_container = this.createElement("div",{className:"inc-exp-container"});
 
@@ -98,13 +97,18 @@ class ExpenseView {
     
         return element;
     }
-    displayBalance(){
-
+    updateBalance(expenses){
+        const balance = expenses.reduce((total, expense) => {
+            const amount = parseFloat(expense.amount) || 0;
+            return total + amount;
+        }, 0);
+    
+        this.balance.innerText = `$${balance.toFixed(2)}`;
     }
+    
     bindDeleteTodo(handler) {
         this.expense_list.addEventListener("click", event => {
             if (event.target.className === "delete-btn") {
-                console.log("Delete");
                 const id = event.target.parentElement.id;
     
                 handler(id);
@@ -116,7 +120,6 @@ class ExpenseView {
         while (this.expense_list.firstChild) {
             this.expense_list.removeChild(this.expense_list.firstChild);
         }
-        console.log(expenses.length);
         // Show default message
         if (expenses.length === 0) {
             const p = this.createElement("p");
@@ -137,5 +140,6 @@ class ExpenseView {
                 this.expense_list.append(historyRow);
             });
         }
+        this.updateBalance(expenses);
     }
 }
