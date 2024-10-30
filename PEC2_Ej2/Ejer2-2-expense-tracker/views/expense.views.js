@@ -44,6 +44,10 @@ class ExpenseView {
         this.exp_container.append(this.div_elem_plus,this.div_elem_minus);
         this.container.append(this.subtitle,this.balance,this.exp_container, this.history_title,this.expense_list ,this.history_new_transaction,this.form);
         this.app.append(this.title, this.container);
+
+        this._temporaryExpenseText = "";
+        this._initLocalListeners();
+
     }
 
     createElement(tag, { className = "", id = "", innerText = "",innerHTML = "", type = "", placeholder = "", for_atr = "" } = {}) {
@@ -108,16 +112,36 @@ class ExpenseView {
         this.money_plus.innerText = `$${income.toFixed(2)}`;
         this.money_minus.innerText = `$${Math.abs(expense).toFixed(2)}`;
     }
-    bindDeleteTodo(handler) {
+    bindDeleteExpense(handler) {
         this.expense_list.addEventListener("click", event => {
             if (event.target.className === "delete-btn") {
                 const id = event.target.parentElement.id;
-    
                 handler(id);
             }
         });
     }
+    
+    _initLocalListeners() {
+        this.expense_list.addEventListener("input", event => {
+            if (event.target.className === "editable") {
+                const id = event.target.parentElement.id;
+                this._temporaryExpenseText = event.target.innerText;
+                
+            }
+        });
+    }
+    bindEditExpense(handler) {
+        this.expense_list.addEventListener("focusout", event => {
+            if (this._temporaryExpenseText) {
+                const id = event.target.parentElement.id;
+                handler(id, this._temporaryExpenseText);
+                this._temporaryExpenseText = "";
+            }
+        });
+    }
+    
     displayExpenses(expenses) {
+        this.updateBalance(expenses);
         // Delete all nodes
         while (this.expense_list.firstChild) {
             this.expense_list.removeChild(this.expense_list.firstChild);
@@ -132,16 +156,26 @@ class ExpenseView {
             expenses.forEach(expense => {
                 const isPositive = expense.amount >= 0;
                 const classType = isPositive ? "plus" : "minus";
-                const rowInnerText = (isPositive ? "+" : "") + expense.amount;
+                const rowInnerText = (isPositive ? "" : "") + expense.amount;
             
-                const historyRow = this.createElement("li", { className: classType, innerText: expense.text, id: expense.id});
-                const rowSpan = this.createElement("span", { innerText: rowInnerText });
+                const historyRow = this.createElement("li", { className: classType, id: expense.id});
+                
+                const rowSpanText = this.createElement("span", {id: "rowText", innerText: expense.text});
+                rowSpanText.classList.add("editable");
+                rowSpanText.contentEditable = true;
+
+                const rowSpanAmount = this.createElement("span", {id: "rowAmount", innerText: rowInnerText });
+                rowSpanAmount.classList.add("editable");
+                rowSpanAmount.contentEditable = true;
+
                 const rowButton = this.createElement("button", { className: "delete-btn", innerText: "x"});
-            
-                historyRow.append(rowSpan, rowButton);
+                
+
+                historyRow.append(rowSpanText,rowSpanAmount, rowButton);
                 this.expense_list.append(historyRow);
             });
         }
-        this.updateBalance(expenses);
+        // Debugging
+        console.log(expenses);
     }
 }

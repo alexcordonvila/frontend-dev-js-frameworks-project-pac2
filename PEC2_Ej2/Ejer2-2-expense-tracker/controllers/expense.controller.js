@@ -1,3 +1,12 @@
+/**
+ * @class Controller
+ *
+ * Links the user input and the view output.
+ *
+ * @param model
+ * @param view
+ */
+
 class ExpenseController {
     constructor(service, view) {
         this.service = service;
@@ -5,7 +14,8 @@ class ExpenseController {
         
         this.service.bindExpenseListChanged(this.onExpenseListChanged);
         this.view.bindAddExpense(this.handleAddExpense);
-        this.view.bindDeleteTodo(this.handleDeleteExpense);
+        this.view.bindEditExpense(this.handleEditExpense);
+        this.view.bindDeleteExpense(this.handleDeleteExpense);
 
         // Display initial expenses
         this.onExpenseListChanged(this.service.expenses);
@@ -20,7 +30,11 @@ class ExpenseController {
     };
 
     handleDeleteExpense = id =>{
-        console.log(id);
         this.service.deleteExpense(id);
     };
+    handleEditExpense = (id, expenseText) => {
+        this.service.editExpense(id, expenseText);
+    };
+
+    
 }

@@ -25,14 +25,32 @@ class ExpenseService {
       this._commit(this.expenses);
     }
     deleteExpense(_id){
-      console.log(_id);
-      console.log(this.expenses);
-
       this.expenses = this.expenses.filter(({ id }) => id !== _id);
       this._commit(this.expenses);
-
     }
-    editExpense(){
 
-    } 
+    editExpense(id, updatedText) {
+      this.expense = this.expenses.map(expense =>
+        expense.id === id
+          ? new Expense({
+              ...expense,
+              text: updatedText
+            })
+          : expense
+      );
+  
+      this._commit(this.expenses);
+    }
+    editExpense(id, updatedText) {
+      this.expenses = this.expenses.map(expense =>
+        expense.id === id
+          ? new Expense({
+              ...expense,
+              text: updatedText
+            })
+          : expense
+      );
+    
+      this._commit(this.expenses);
+    }
 }
