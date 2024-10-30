@@ -22,7 +22,7 @@ class ExpenseView {
 
         this.history_title = this.createElement("h3",{innerText:"History"});
         
-        this.history_list = this.createElement("ul",{className:"list",id:"list"});
+        this.expense_list = this.createElement("ul",{className:"list",id:"list"});
 
         this.history_new_transaction = this.createElement("h3",{innerText:"Add new transaction"});
 
@@ -40,12 +40,11 @@ class ExpenseView {
         this.form_button = this.createElement("button", {className:"btn", innerText:"Add transaction"});
         this.form.append(this.form_control,this.form_control_amount, this.form_button);
 
-        
         this.div_elem_plus.append(this.income_title, this.money_plus);
         this.div_elem_minus.append(this.expense_title, this.money_minus);
 
         this.exp_container.append(this.div_elem_plus,this.div_elem_minus);
-        this.container.append(this.subtitle,this.balance,this.exp_container, this.history_title,this.history_list ,this.history_new_transaction,this.form);
+        this.container.append(this.subtitle,this.balance,this.exp_container, this.history_title,this.expense_list ,this.history_new_transaction,this.form);
         this.app.append(this.title, this.container);
     }
 
@@ -66,10 +65,10 @@ class ExpenseView {
     get _expenseText() {
         return this.input_text.value;
     }
-
     get _expenseAmount() {
         return this.input_amount.value;
     }
+
     _resetInputText() {
         this.input_text.value = "";
     }
@@ -99,18 +98,30 @@ class ExpenseView {
     
         return element;
     }
+    displayBalance(){
 
+    }
+    bindDeleteTodo(handler) {
+        this.expense_list.addEventListener("click", event => {
+            if (event.target.className === "delete-btn") {
+                console.log("Delete");
+                const id = event.target.parentElement.id;
+    
+                handler(id);
+            }
+        });
+    }
     displayExpenses(expenses) {
         // Delete all nodes
-        while (this.history_list.firstChild) {
-            this.history_list.removeChild(this.history_list.firstChild);
+        while (this.expense_list.firstChild) {
+            this.expense_list.removeChild(this.expense_list.firstChild);
         }
         console.log(expenses.length);
         // Show default message
         if (expenses.length === 0) {
             const p = this.createElement("p");
             p.textContent = "Your expense history is empty.";
-            this.history_list.append(p);
+            this.expense_list.append(p);
         } else {
             // Create nodes
             expenses.forEach(expense => {
@@ -118,12 +129,12 @@ class ExpenseView {
                 const classType = isPositive ? "plus" : "minus";
                 const rowInnerText = (isPositive ? "+" : "") + expense.amount;
             
-                const historyRow = this.createElement("li", { className: classType, innerText: expense.text });
+                const historyRow = this.createElement("li", { className: classType, innerText: expense.text, id: expense.id});
                 const rowSpan = this.createElement("span", { innerText: rowInnerText });
-                const rowButton = this.createElement("button", { className: "delete-btn", innerText: "x" });
+                const rowButton = this.createElement("button", { className: "delete-btn", innerText: "x"});
             
                 historyRow.append(rowSpan, rowButton);
-                this.history_list.append(historyRow);
+                this.expense_list.append(historyRow);
             });
         }
     }

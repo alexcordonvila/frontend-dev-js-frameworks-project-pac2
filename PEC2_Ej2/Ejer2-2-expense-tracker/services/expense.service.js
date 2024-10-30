@@ -24,8 +24,12 @@ class ExpenseService {
       this.expenses.push(new Expense({ text: expenseText, amount: expenseAmount }));
       this._commit(this.expenses);
     }
-    deleteExpense(){
+    deleteExpense(_id){
+      console.log(_id);
+      console.log(this.expenses);
+
       this.expenses = this.expenses.filter(({ id }) => id !== _id);
+      this._commit(this.expenses);
 
     }
     editExpense(){
