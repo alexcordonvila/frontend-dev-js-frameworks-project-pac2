@@ -1,9 +1,8 @@
 class ExpenseView {
     constructor() {
-        this.app = this.getElement("#root");
+        this.app = this.getElement("body");
         this.title = this.createElement("h2",{innerText:"Expense Tracker"});
         this.container = this.createElement("div",{className: "container"});
-this.balance
         this.subtitle = this.createElement("h4",{innerText:"Your Balance"});
 
         this.balance = this.createElement("h1", { id: "balance", innerText: "$0.00" });
@@ -81,31 +80,34 @@ this.balance
             const expenseText = this._expenseText;
             const expenseAmount = this._expenseAmount;
 
-            // Validación para asegurarse de que ambos campos tengan valor
         if (expenseText && expenseAmount) {
-            handler(expenseText, expenseAmount); // Llamada única a handler con ambos valores
+            handler(expenseText, expenseAmount); 
             this._resetInputText();
             this._resetInputAmount();
         } else {
-            console.log("Please enter both a description and an amount for the expense.");
+            alert('Please add a text and amount');
         }
         });
     }
-
     getElement(selector) {
         const element = document.querySelector(selector);
-    
         return element;
     }
     updateBalance(expenses){
-        const balance = expenses.reduce((total, expense) => {
-            const amount = parseFloat(expense.amount) || 0;
-            return total + amount;
-        }, 0);
-    
+        const { balance, income, expense } = expenses.reduce(
+            (totals, expense) => {
+                const amount = parseFloat(expense.amount) || 0;
+                totals.balance += amount;
+                if (amount > 0) totals.income += amount;
+                else totals.expense += amount;
+                return totals;
+            },
+            { balance: 0, income: 0, expense: 0 }
+        );
         this.balance.innerText = `$${balance.toFixed(2)}`;
+        this.money_plus.innerText = `$${income.toFixed(2)}`;
+        this.money_minus.innerText = `$${Math.abs(expense).toFixed(2)}`;
     }
-    
     bindDeleteTodo(handler) {
         this.expense_list.addEventListener("click", event => {
             if (event.target.className === "delete-btn") {
