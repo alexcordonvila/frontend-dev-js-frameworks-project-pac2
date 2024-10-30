@@ -114,13 +114,16 @@ class ExpenseView {
         } else {
             // Create nodes
             expenses.forEach(expense => {
-                console.log(expense)
-                this.history_row = this.createElement("li",{className:"plus",innerText: expense.text});
-                this.row_span = this.createElement("span",{innerText:expense.amount});
-                this.row_button = this.createElement("button",{className:"delete-btn", innerText:"X"});
-                this.history_row.append(this.row_span, this.row_button);
-                this.history_list.append(this.history_row);
-                
+                const isPositive = expense.amount >= 0;
+                const classType = isPositive ? "plus" : "minus";
+                const rowInnerText = (isPositive ? "+" : "") + expense.amount;
+            
+                const historyRow = this.createElement("li", { className: classType, innerText: expense.text });
+                const rowSpan = this.createElement("span", { innerText: rowInnerText });
+                const rowButton = this.createElement("button", { className: "delete-btn", innerText: "x" });
+            
+                historyRow.append(rowSpan, rowButton);
+                this.history_list.append(historyRow);
             });
         }
     }
