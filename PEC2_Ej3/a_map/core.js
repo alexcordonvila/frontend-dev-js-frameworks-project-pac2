@@ -1,5 +1,5 @@
 function multiplyBy10(array) {
-  // your code here
+  return array.map((x) => x * 10);
 }
 
 function shiftRight(array) {
