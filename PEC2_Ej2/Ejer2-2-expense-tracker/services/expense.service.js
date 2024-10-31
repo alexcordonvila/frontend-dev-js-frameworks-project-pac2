@@ -29,24 +29,13 @@ class ExpenseService {
       this._commit(this.expenses);
     }
 
-    editExpense(id, updatedText) {
-      this.expense = this.expenses.map(expense =>
-        expense.id === id
-          ? new Expense({
-              ...expense,
-              text: updatedText
-            })
-          : expense
-      );
-  
-      this._commit(this.expenses);
-    }
-    editExpense(id, updatedText) {
+    editExpense(id, updatedText,updateAmount) {
       this.expenses = this.expenses.map(expense =>
         expense.id === id
           ? new Expense({
               ...expense,
-              text: updatedText
+              text: (updatedText !== null && updatedText !== undefined) ? updatedText : expense.text,
+              amount: (updateAmount !== null && updateAmount !== undefined) ? updateAmount : expense.amount
             })
           : expense
       );

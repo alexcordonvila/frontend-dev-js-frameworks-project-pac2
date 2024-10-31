@@ -1,3 +1,8 @@
+/**
+ * @class View
+ *
+ * Visual representation of the model.
+ */
 class ExpenseView {
     constructor() {
         this.app = this.getElement("body");
@@ -46,6 +51,7 @@ class ExpenseView {
         this.app.append(this.title, this.container);
 
         this._temporaryExpenseText = "";
+        this._temporaryAmountText = "";
         this._initLocalListeners();
 
     }
@@ -124,18 +130,25 @@ class ExpenseView {
     _initLocalListeners() {
         this.expense_list.addEventListener("input", event => {
             if (event.target.className === "editable") {
-                const id = event.target.parentElement.id;
-                this._temporaryExpenseText = event.target.innerText;
-                
+                if (event.target.id === "rowText") {
+                    this._temporaryExpenseText = event.target.innerText; 
+                }
+                if (event.target.id === "rowAmount") {
+                    this._temporaryExpenseAmount = event.target.innerText; 
+                }
             }
         });
     }
     bindEditExpense(handler) {
         this.expense_list.addEventListener("focusout", event => {
-            if (this._temporaryExpenseText) {
-                const id = event.target.parentElement.id;
-                handler(id, this._temporaryExpenseText);
+            const id = event.target.parentElement.id;
+            const updatedText = this._temporaryExpenseText || null;
+            const updatedAmount = this._temporaryExpenseAmount || null;
+    
+            if (updatedText !== null || updatedAmount !== null) {
+                handler(id, updatedText, updatedAmount);
                 this._temporaryExpenseText = "";
+                this._temporaryExpenseAmount = "";
             }
         });
     }
@@ -156,21 +169,18 @@ class ExpenseView {
             expenses.forEach(expense => {
                 const isPositive = expense.amount >= 0;
                 const classType = isPositive ? "plus" : "minus";
-                const rowInnerText = (isPositive ? "" : "") + expense.amount;
+                const rowInnerText = (isPositive ? "+" : "") + Number(expense.amount);
             
                 const historyRow = this.createElement("li", { className: classType, id: expense.id});
                 
-                const rowSpanText = this.createElement("span", {id: "rowText", innerText: expense.text});
-                rowSpanText.classList.add("editable");
+                const rowSpanText = this.createElement("span", {className: "editable",id: "rowText", innerText: expense.text});
                 rowSpanText.contentEditable = true;
 
-                const rowSpanAmount = this.createElement("span", {id: "rowAmount", innerText: rowInnerText });
-                rowSpanAmount.classList.add("editable");
+                const rowSpanAmount = this.createElement("span", {className: "editable", id: "rowAmount", innerText: rowInnerText });
                 rowSpanAmount.contentEditable = true;
 
                 const rowButton = this.createElement("button", { className: "delete-btn", innerText: "x"});
                 
-
                 historyRow.append(rowSpanText,rowSpanAmount, rowButton);
                 this.expense_list.append(historyRow);
             });
