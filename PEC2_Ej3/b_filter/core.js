@@ -11,7 +11,10 @@ function positiveRowsOnly(array) {
 }
 
 function allSameVowels(array) {
-  // your code here
+  return array.filter(word => {
+    const vowels = word.match(/[aeiouAEIOU]/g); 
+    return vowels.every(vowel => vowel === vowels[0]);
+  });
 }
 
 module.exports = {
