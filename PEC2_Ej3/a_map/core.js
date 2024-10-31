@@ -3,15 +3,25 @@ function multiplyBy10(array) {
 }
 
 function shiftRight(array) {
-  // your code here
+  const longitud = array.length;
+  const result = array.map((element, index_actual, array_original) => {
+    return array_original[(index_actual - 1 + longitud) % longitud]
+  });
+  return result;
 }
 
 function onlyVowels(array) {
-  // your code here
+  const result = array.map(element => {
+    return element.replace(/[^aeiouAEIOU]/g, ''); 
+  });
+  return result;
 }
 
 function doubleMatrix(array) {
-  // your code here
+  const result = array.map(element => {
+    return element.map(numero => numero * 2);
+  });
+  return result;
 }
 
 module.exports = {
