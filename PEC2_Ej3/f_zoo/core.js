@@ -1,5 +1,22 @@
+const data = require('./data');
+
 function entryCalculator(entrants) {
-  // your code here
+  if(!entrants || Object.keys(entrants).length === 0){
+    return 0;
+  }else{
+    return Object.keys(entrants).reduce(function(acc, key) {
+      if (key === "Adult") {
+          return acc + entrants[key] * data.prices.Adult;
+      }
+      if (key === "Senior") {
+          return acc + entrants[key] * data.prices.Senior;
+      }
+      if (key === "Child") {
+          return acc + entrants[key] * data.prices.Child;
+      }
+      return (acc); 
+    }, 0); 
+  }
 }
 
 function schedule(dayName) {
@@ -7,7 +24,7 @@ function schedule(dayName) {
 }
 
 function animalCount(species) {
-  // your code here
+    // your code here
 }
 
 function animalMap(options) {
