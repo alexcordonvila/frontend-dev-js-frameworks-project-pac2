@@ -18,9 +18,26 @@ function entryCalculator(entrants) {
     }, 0); 
   }
 }
-
+function formatTime(hour) {
+  return new Date(0, 0, 0, hour).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    hour12: true
+  }).toLowerCase().replace(' ', ''); 
+}
 function schedule(dayName) {
-  // your code here
+  var result = Object.entries(data.hours).reduce((acc, [day, hours]) => {
+    if (hours.open > 0 && hours.close > 0) {
+      acc[day] = `Open from ${formatTime(hours.open)} until ${formatTime(hours.close)}`;
+    }else{
+      acc[day] = 'CLOSED';
+    }
+      return acc;
+    }, {});
+    if(!dayName){ 
+      return result;  //with no parameters, returns a more human readable schedule
+    }else{ 
+      return {[dayName]: result[dayName] }; //with a single day entered, returns only that day in a more human readable format
+    }
 }
 
 function animalCount(species) {
