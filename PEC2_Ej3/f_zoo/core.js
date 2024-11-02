@@ -59,7 +59,7 @@ function getNamesBySpecie(specie, sex){
 }
 function animalMap(options) {
   const uniqueLocations = [...new Set(data.animals.map(animal => animal.location))];
-  
+
   const result = uniqueLocations.reduce((acc, location) => {
     acc[location] = data.animals
       .filter(animal => animal.location === location)
@@ -76,7 +76,16 @@ function animalMap(options) {
 }
 
 function animalPopularity(rating) {
-  // your code here
+  const uniquePopularity = [...new Set(data.animals.map(animal => animal.popularity))];
+
+  var result = uniquePopularity.reduce((acc, popularity) => {
+    acc[popularity] = data.animals
+    .filter(animal => animal.popularity === popularity)
+    .map(animal => animal.name);    
+    return acc;
+  }, {});
+
+  return rating ? result[rating] : result;
 }
 
 function animalsByIds(ids) {
