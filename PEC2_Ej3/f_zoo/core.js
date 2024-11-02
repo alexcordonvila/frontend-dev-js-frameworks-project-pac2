@@ -33,15 +33,20 @@ function schedule(dayName) {
     }
       return acc;
     }, {});
-    if(!dayName){ 
-      return result;  //with no parameters, returns a more human readable schedule
-    }else{ 
-      return {[dayName]: result[dayName] }; //with a single day entered, returns only that day in a more human readable format
-    }
+
+    return dayName ? { [dayName]: result[dayName] } : result;
+
 }
 
 function animalCount(species) {
-    // your code here
+
+  var result = data.animals.reduce((acc, animal) => {
+    acc[animal.name] = animal.residents.length;
+    return acc; 
+  }, {});
+
+  return species ? result[species] : result;
+
 }
 
 function animalMap(options) {
