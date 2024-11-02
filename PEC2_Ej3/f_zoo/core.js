@@ -89,6 +89,9 @@ function animalPopularity(rating) {
 }
 
 function animalsByIds(ids) {
+  if (Array.isArray(ids)) {
+    return ids.map(currentId => data.animals.find(animal => animal.id === currentId));
+  }
   return ids ? data.animals.filter(animal=>animal.id===ids) : [];
 }
 
