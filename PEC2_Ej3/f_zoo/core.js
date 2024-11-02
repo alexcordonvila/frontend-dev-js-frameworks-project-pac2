@@ -89,7 +89,7 @@ function animalPopularity(rating) {
 }
 
 function animalsByIds(ids) {
-  // your code here
+  return ids ? data.animals.filter(animal=>animal.id===ids) : [];
 }
 
 function animalByName(animalName) {
