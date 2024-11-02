@@ -48,9 +48,22 @@ function animalCount(species) {
   return species ? result[species] : result;
 
 }
-
+function getNamesBySpecie(specie){
+  const names = data.animals.find(animal => animal.name === specie).residents.map(resident => resident.name);
+  return {[specie]: names};
+}
 function animalMap(options) {
-  // your code here
+
+  const uniqueLocations = [...new Set(data.animals.map(animal => animal.location))];
+
+  const result = uniqueLocations.reduce((acc, location) => {
+    acc[location] = data.animals
+      .filter(animal => animal.location === location)
+      .map(animal => options && options.includeNames ? getNamesBySpecie(animal.name) : animal.name);
+    return acc;
+  }, {});
+
+  return result;
 }
 
 function animalPopularity(rating) {
