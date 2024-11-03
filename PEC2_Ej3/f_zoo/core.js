@@ -104,8 +104,7 @@ function animalsByIds(ids) {
 }
 
 function animalByName(animalName) {
-
-  var result= data.animals
+  var result = data.animals
     .map((animal) =>
       animal.residents
         .filter((resident) => resident.name === animalName)
@@ -113,11 +112,10 @@ function animalByName(animalName) {
           ...resident,
           species: animal.name,
         }))
-    ).flat();
-    
-  return animalName
-    ? result[0]
-    : {};
+    )
+    .flat();
+
+  return animalName ? result[0] : {};
 }
 
 function employeesByIds(ids) {
@@ -127,48 +125,62 @@ function employeesByIds(ids) {
     );
   }
   return ids ? data.employees.filter((employee) => employee.id === ids) : [];
-    
 }
 
 function employeeByName(employeeName) {
+  var result = data.employees.find(
+    (employee) =>
+      employee.firstName === employeeName || employee.lastName === employeeName
+  );
 
-  var result=data.employees.find(
-  employee => employee.firstName === employeeName || employee.lastName === employeeName
-);
-
-return employeeName
-  ? result
-  : {};
+  return employeeName ? result : {};
 }
-function isId(idOrName){
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrName);
+function isId(idOrName) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+    idOrName
+  );
 }
 function managersForEmployee(idOrName) {
-  var employeeData = isId(idOrName) ? employeesByIds(idOrName)[0] : employeeByName(idOrName);
+  var employeeData = isId(idOrName)
+    ? employeesByIds(idOrName)[0]
+    : employeeByName(idOrName);
   var employeeManagerId = employeeData.managers;
   var employeeManagerData = employeesByIds(employeeManagerId);
-  var managerNames = employeeManagerData.map(managerData => `${managerData.firstName} ${managerData.lastName}`);
+  var managerNames = employeeManagerData.map(
+    (managerData) => `${managerData.firstName} ${managerData.lastName}`
+  );
 
-  return result = {
+  return (result = {
     ...employeeData,
-    managers: managerNames
-  };
+    managers: managerNames,
+  });
 }
 
 function employeeCoverage(idOrName) {
-  var employeeById = data.employees.some(employee => (employee.id === idOrName) || employee.firstName === idOrName);
+  var employeeExists = data.employees.some(
+    (employee) =>
+      employee.id === idOrName ||
+      employee.firstName === idOrName ||
+      employee.lastName === idOrName
+  );
   // with no parameters, returns a list of employees and the animals they're responsible for
-  var employeeData = employeeById ? 
-                    data.employees.filter(employee => (employee.id === idOrName) || employee.firstName === idOrName ) : 
-                    data.employees;
+  var employeeData = employeeExists
+    ? data.employees.filter(
+        (employee) =>
+          employee.id === idOrName ||
+          employee.firstName === idOrName ||
+          employee.lastName === idOrName
+      )
+    : data.employees;
 
   var result = employeeData.reduce((acc, employee) => {
-    console.log(animalsByIds(employee.responsibleFor)[0].name);
-    acc[`${employee.firstName} ${employee.lastName}`] = animalsByIds(employee.responsibleFor).map(animal => animal.name);
+    acc[`${employee.firstName} ${employee.lastName}`] = animalsByIds(
+      employee.responsibleFor
+    ).map((animal) => animal.name);
     return acc;
   }, {});
-  
-    return result;
+
+  return result;
 }
 
 module.exports = {
