@@ -156,16 +156,19 @@ function managersForEmployee(idOrName) {
 }
 
 function employeeCoverage(idOrName) {
-  var employeeData = isId(idOrName) ? employeesByIds(idOrName)[0] : employeeByName(idOrName);
+  var employeeById = data.employees.some(employee => employee.id === idOrName);
   // with no parameters, returns a list of employees and the animals they're responsible for
-  if(!idOrName){
-    var result = data.employees.reduce((acc, employee) => {
-      console.log(animalsByIds(employee.responsibleFor)[0].name);
-      acc[`${employee.firstName} ${employee.lastName}`] = animalsByIds(employee.responsibleFor).map(animal => animal.name);
-      return acc;
-    }, {});
-  }
-return result;
+  var employeeData = employeeById ? 
+                    data.employees.filter(employee => employee.id === idOrName ) : 
+                    data.employees;
+
+  var result = employeeData.reduce((acc, employee) => {
+    console.log(animalsByIds(employee.responsibleFor)[0].name);
+    acc[`${employee.firstName} ${employee.lastName}`] = animalsByIds(employee.responsibleFor).map(animal => animal.name);
+    return acc;
+  }, {});
+  
+    return result;
 }
 
 module.exports = {
