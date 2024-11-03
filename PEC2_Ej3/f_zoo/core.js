@@ -140,9 +140,19 @@ return employeeName
   ? result
   : {};
 }
-
+function isId(idOrName){
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrName);
+}
 function managersForEmployee(idOrName) {
-  // your code here
+  var employeeData = isId(idOrName) ? employeesByIds(idOrName)[0] : employeeByName(idOrName);
+  var employeeManagerId = employeeData.managers;
+  var employeeManagerData = employeesByIds(employeeManagerId);
+  var managerNames = employeeManagerData.map(managerData => `${managerData.firstName} ${managerData.lastName}`);
+
+  return result = {
+    ...employeeData,
+    managers: managerNames
+  };
 }
 
 function employeeCoverage(idOrName) {
