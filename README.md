@@ -25,7 +25,6 @@ Les principals dificultats que s'han presentat han estat:
 
 4. **Display Expenses**: Per mostrar correctament tot el contingut i ajustar-se a l'aplicació de referència, ha estat necessari treballar d'una manera meticulosa i sobretot planificar i estructurar molt bé el codi.
 
-5. 
 ### **PAC2_Ej3**
 
 En aquest exercici, s'ha treballat en el desenvolupament d'un conjunt de funcions en JavaScript, aprofitant les capacitats del llenguatge per gestionar arrays, objectes, matrius i diverses estructures de dades. A través d'aquest enfocament, s'ha aplicat el coneixement adquirit per gestionar informació relacionada amb animals i empleats d'un zoològic, facilitant la realització de consultes i càlculs necessaris per al seu funcionament.
