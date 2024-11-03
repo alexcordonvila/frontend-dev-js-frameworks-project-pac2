@@ -156,10 +156,10 @@ function managersForEmployee(idOrName) {
 }
 
 function employeeCoverage(idOrName) {
-  var employeeById = data.employees.some(employee => employee.id === idOrName);
+  var employeeById = data.employees.some(employee => (employee.id === idOrName) || employee.firstName === idOrName);
   // with no parameters, returns a list of employees and the animals they're responsible for
   var employeeData = employeeById ? 
-                    data.employees.filter(employee => employee.id === idOrName ) : 
+                    data.employees.filter(employee => (employee.id === idOrName) || employee.firstName === idOrName ) : 
                     data.employees;
 
   var result = employeeData.reduce((acc, employee) => {
